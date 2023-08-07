@@ -1,17 +1,17 @@
 const { globalShortcut } = require("electron");
-function registerGlobalShortCut() {
-    const ret = globalShortcut.register('CommandOrControl+e', () => {
-        console.log('asodhoqhwpo');
+function registerGlobalShortCut(mainWin) {
+    globalShortcut.register('Alt+Right', () => {
+        mainWin.webContents.send('onNextPlay')
     })
-    if (!ret) {
-        console.log('keyboard register error');
-    }
+    globalShortcut.register('Alt+Left', () => {
+        mainWin.webContents.send('onPrevPlay')
+    })
 }
 
 function unregisterAll() {
     globalShortcut.unregisterAll()
 }
 
-exports = {
+module.exports = {
     registerGlobalShortCut, unregisterAll
 }

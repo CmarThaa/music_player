@@ -13,11 +13,9 @@ const fileSelect = (e: Event) => {
 
     window.electronAPI.storeSet('music_file', jsonFile)
     musicStore.loadFromStorage()
-    // window.electronAPI.fileSelect(e)
 }
 </script>
 <template>
     <input type="file" webkitdirectory @change="fileSelect">
-    <button>清空列表</button>
 </template>
 <style scoped></style>

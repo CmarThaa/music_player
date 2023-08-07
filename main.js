@@ -6,10 +6,11 @@ const {
   unregisterAll,
   registerGlobalShortCut,
 } = require("./elcConfig/keyboard.ts");
+let mainWin = null;
 const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 1200,
-    height: 1000,
+  mainWin = new BrowserWindow({
+    width: 400,
+    height: 600,
     frame: false,
     webPreferences: {
       webSecurity: false,
@@ -19,9 +20,7 @@ const createWindow = () => {
   });
 
   ipcMain.on("closeAll", (event, title) => {
-    const webContents = event.sender;
-    // const win = BrowserWindow.fromWebContents(webContents);
-    win.close();
+    mainWin.close();
   });
   ipcMain.on("fileSelect", (event, domEvent) => {
     console.log(domEvent);
@@ -39,8 +38,8 @@ const createWindow = () => {
     return file;
   });
 
-  //   win.loadFile("./dist/index.html");
-  win.loadURL("http://localhost:5173/");
+  //   mainWin.loadFile("./dist/index.html");
+  mainWin.loadURL("http://localhost:5173/");
 };
 
 app.whenReady().then(() => {
@@ -48,7 +47,7 @@ app.whenReady().then(() => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-  registerGlobalShortCut();
+  registerGlobalShortCut(mainWin);
 });
 
 app.on("will-quit", () => {

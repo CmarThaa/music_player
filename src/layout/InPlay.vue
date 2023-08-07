@@ -2,14 +2,16 @@
 import { nextTick, ref, watch } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
+import { MusicStatus } from '../enums';
 
 const audioRef = ref<HTMLAudioElement>()
 const musicStore = useMusicListStore()
 const { inPlaying: nowMusic } = storeToRefs(musicStore)
-watch(nowMusic, () => {
+watch(nowMusic, (music) => {
     nextTick(() => {
         try {
-            audioRef.value?.play()
+            if (music?.status === MusicStatus.Play)
+                audioRef.value?.play()
             if (audioRef.value) {
                 audioRef.value.onended = () => {
                     // 根据设置是否循环播放

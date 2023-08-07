@@ -1,10 +1,30 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useMusicListStore } from '../stores/musics';
+import { storeToRefs } from 'pinia';
+import { type Music } from '../type';
+const searchVal = ref()
 const musicStore = useMusicListStore()
+const musicStoreRef = storeToRefs(musicStore)
+const filterList = ref<Array<Music>>([])
+const displayList = computed(() => {
+    if (filterList.value && filterList.value.length) {
+        return filterList.value
+    }
+    return musicStoreRef.list.value
+})
 function play(music: any) {
-    console.log(music);
     musicStore.play(music)
+}
+function onKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+        if (filterList.value?.length)
+            play(filterList.value[0])
+    }
+}
+function onInput(val: Event) {
+    const value = (val.target as HTMLInputElement).value
+    filterList.value = musicStore.list?.filter(v => v.name.includes(value)) || []
 }
 onMounted(async () => {
     try {
@@ -12,19 +32,36 @@ onMounted(async () => {
     } catch (error) {
 
     }
+
+    window.electronAPI.onNextPlay(() => {
+        musicStore.playNext()
+    })
+    window.electronAPI.onPrevPlay(() => {
+        musicStore.playPrev()
+    })
 })
 </script>
 <template>
-    <section class="mic" v-for="(music, index) in musicStore.list" :key="index" @click="play(music)">
-        {{ music.name }}
+    <input type="text" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput" placeholder="过滤歌名">
+    <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
+        :key="index" @click="play(music)">
+        <div class="name">{{ music.name }}</div>
     </section>
 </template>
 <style scoped>
 .mic {
     cursor: pointer;
+    border: 1px dashed #ccc;
+    margin: .2rem 0;
 }
 
-.mic:hover {
+.mic.playing {
     color: rgb(78, 128, 76);
+    border: 1px solid rgb(178, 178, 249);
+}
+
+.mic.playing .mic:hover {
+    color: rgb(78, 128, 76);
+    border: 1px solid rgb(178, 178, 249);
 }
 </style>
