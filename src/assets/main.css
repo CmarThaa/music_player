@@ -1,0 +1,53 @@
+@import './base.css';
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  /* body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  } */
+}
+
+.app-dragable {
+    /* overflow: hidden; */
+    -webkit-app-region: drag;
+}
+::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 1rem;
+}
+
+::-webkit-scrollbar-track {
+    width: .6rem;
+    background-color: #ccc;
+    border-radius: .2rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(144, 147, 153, .3);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(144,147,153,.5);
+    background-clip: padding-box;
+    min-height: 2.8rem;
+    border-radius: .2rem;
+    cursor: pointer;
+    transition: all .3s;
+}
