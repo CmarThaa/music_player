@@ -38,8 +38,8 @@ const createWindow = () => {
     return file;
   });
 
-  mainWin.loadFile("./dist/index.html");
-  //   mainWin.loadURL("http://localhost:5173/");
+  // mainWin.loadFile("./dist/index.html");
+  mainWin.loadURL("http://localhost:5173/");
 };
 
 if (require("electron-squirrel-startup")) app.quit();

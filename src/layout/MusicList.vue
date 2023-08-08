@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
-import { type Music } from '../type';
+import { Music } from '@/type';
 const searchVal = ref()
 const musicStore = useMusicListStore()
 const musicStoreRef = storeToRefs(musicStore)

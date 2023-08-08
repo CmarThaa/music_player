@@ -1,8 +1,8 @@
 {
   "scripts": {
+    "electron": "electron .",
     "start": "electron-forge start",
-    "build": "run-p type-check build-only",
-    "build-only": "vite build",
+    "build": "vite build",
     "dev": "vite",
     "package": "electron-forge package",
     "make": "electron-forge make"
@@ -43,8 +43,8 @@
     "vitest": "^0.32.0",
     "vue-tsc": "^1.6.5"
   },
-  "name": "c-player",
-  "version": "1.0.0",
+  "name": "easy-player",
+  "version": "0.0.1",
   "description": "Music Player!",
   "main": "main.js",
   "author": "Cmart",
