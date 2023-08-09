@@ -2,7 +2,8 @@
 import { nextTick, ref, watch } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
-import { MusicStatus } from '../enums';
+import { CircleTypeEnum, MusicStatus } from '../enums';
+import { usePlayerStore } from '../stores/player';
 
 const audioRef = ref<HTMLAudioElement>()
 const musicStore = useMusicListStore()
@@ -14,8 +15,13 @@ watch(nowMusic, (music) => {
                 audioRef.value?.play()
             if (audioRef.value) {
                 audioRef.value.onended = () => {
-                    // 根据设置是否循环播放
-                    musicStore.playNext()
+                    const playerStore = usePlayerStore()
+                    if (playerStore.circleType === CircleTypeEnum.Single) {
+                        // 根据设置是否单曲循环
+                        audioRef.value?.play()
+                    } else {
+                        musicStore.playNext()
+                    }
                 }
             }
         } catch (error) {

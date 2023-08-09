@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { type Music } from '@/type'
-import { MusicStatus } from '@/enums'
+import { CircleTypeEnum, MusicStatus } from '@/enums'
+import { usePlayerStore } from './player'
 
 
 export const useMusicListStore = defineStore('music', () => {
@@ -32,6 +33,11 @@ export const useMusicListStore = defineStore('music', () => {
     }
 
     function playNext() {
+        const playerStore = usePlayerStore()
+        if (playerStore.circleType === CircleTypeEnum.Random) {
+            playRandom()
+            return
+        }
         if (list.value?.length) {
             // 循环播放 || 还未播放
             if (playIndex.value + 1 === list.value.length || _alreadyPlay === 0) {
@@ -42,7 +48,18 @@ export const useMusicListStore = defineStore('music', () => {
         }
     }
 
+    function playRandom() {
+        const max = list.value?.length || 0
+        const random = Math.floor(Math.random() * max)
+        playByIndex(random)
+    }
+
     function playPrev() {
+        const playerStore = usePlayerStore()
+        if (playerStore.circleType === CircleTypeEnum.Random) {
+            playRandom()
+            return
+        }
         if (list.value?.length) {
             // 循环播放 || 还未播放
             if (playIndex.value === 0) {

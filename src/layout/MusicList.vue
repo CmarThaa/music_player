@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
 import { Music } from '@/type';
+import CircleType from '@/components/CircleType.vue';
 const searchVal = ref()
 const musicStore = useMusicListStore()
 const musicStoreRef = storeToRefs(musicStore)
@@ -42,9 +43,12 @@ onMounted(async () => {
 })
 </script>
 <template>
-    <input type="text" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput" placeholder="过滤歌名">
+    <div>
+        <input type="text" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput" placeholder="过滤歌名">
+        <CircleType></CircleType>
+    </div>
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
-        :key="index" @click="play(music)">
+        :key="index" @click="play(music)" ref="micRef">
         <div class="name">{{ music.name }}</div>
     </section>
 </template>
@@ -58,6 +62,7 @@ onMounted(async () => {
 .mic.playing {
     color: rgb(78, 128, 76);
     border: 1px solid rgb(178, 178, 249);
+    height: 3rem;
 }
 
 .mic.playing .mic:hover {
