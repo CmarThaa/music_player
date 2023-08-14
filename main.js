@@ -38,8 +38,13 @@ const createWindow = () => {
     return file;
   });
 
-  // mainWin.loadFile("./dist/index.html");
-  mainWin.loadURL("http://localhost:5173/");
+  console.log("vite env", process.env.NODE_ENV);
+
+  if (process.env.NODE_ENV === "development") {
+    mainWin.loadURL("http://localhost:5173/");
+  } else {
+    mainWin.loadFile("./dist/index.html");
+  }
 };
 
 if (require("electron-squirrel-startup")) app.quit();
