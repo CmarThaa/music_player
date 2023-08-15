@@ -6,6 +6,10 @@ function changeCircle() {
 }
 </script>
 <template>
-    <button @click="changeCircle">{{ playerStore.circleType }}</button>
+    <el-button class="CircleType" type="primary" size="mini" @click="changeCircle">{{ playerStore.circleType }}</el-button>
 </template>
-<style scoped></style>
+<style scoped>
+.CircleType {
+    margin-left: .2rem;
+}
+</style>

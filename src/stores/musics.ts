@@ -4,12 +4,29 @@ import { type Music } from '@/type'
 import { CircleTypeEnum, MusicStatus } from '@/enums'
 import { usePlayerStore } from './player'
 
-
 export const useMusicListStore = defineStore('music', () => {
     let _alreadyPlay = 0
     const list = ref<Array<Music>>()
     const inPlaying = ref<Music>()
     const playIndex = ref(0)
+
+    const isOpenLyrics = ref(false)
+
+    function setInPlaying(attr: string, val: any) {
+        if (inPlaying.value) {
+            inPlaying.value[attr] = val
+        }
+    }
+    function setLyricsOpen(open: boolean) {
+        if (inPlaying.value) {
+            isOpenLyrics.value = open
+        }
+    }
+    function setPlayingLyricsTxt(txt: string) {
+        if (inPlaying.value) {
+            setInPlaying('lyrics', txt)
+        }
+    }
     function setList(val: Array<Music>) {
         list.value = val || []
     }
@@ -83,6 +100,7 @@ export const useMusicListStore = defineStore('music', () => {
     return {
         setList, list, playNext, playIndex,
         inPlaying, play, loadFromStorage, playPrev,
+        setLyricsOpen, isOpenLyrics, setPlayingLyricsTxt, setInPlaying,
         persist: true,
     }
 })

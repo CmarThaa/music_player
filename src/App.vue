@@ -3,6 +3,7 @@ import MainHeader from '@/layout/MainHeader.vue'
 import MusicList from './layout/MusicList.vue';
 import FileUploader from './layout/FileUploader.vue';
 import InPlay from './layout/InPlay.vue';
+import LyricsDetail from './components/LyricsDetail.vue';
 
 </script>
 
@@ -17,6 +18,8 @@ import InPlay from './layout/InPlay.vue';
     </div>
     <br />
     <in-play class="footer"></in-play>
+
+    <LyricsDetail></LyricsDetail>
 </template>
 
 <style scoped>
