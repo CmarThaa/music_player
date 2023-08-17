@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
+import { findIndexByCurrentTime, formatLyricsLrc } from '../utils/lyrics';
 const musicStore = useMusicListStore()
 const { isOpenLyrics, inPlaying } = storeToRefs(musicStore)
 const nowDetailTxt = '暂无歌词'
@@ -20,26 +21,13 @@ watch(inPlaying, async val => {
     displayLyrics.value = nowDetailTxt
 })
 
-const displayDetail = computed(() => displayLyrics.value.split("\n").map(v => {
-    const match = v.match(/\[\d+:\d+\.?\d{2,}\]/)
-    const lineTime = match && match[0] || ''
-    const line = v.replace(lineTime, '') || '---'
-    return { lineTime, line }
-}))
+const displayDetail = computed(() => formatLyricsLrc(displayLyrics.value))
 
 const curLineIdx = ref(0)
 
 const autoPlayTop = computed(() => {
     const cur = inPlaying.value?.currentTime || 0 // 秒数 number
-    curLineIdx.value = displayDetail.value.findIndex((v, idx) => {
-        if (idx === displayDetail.value.length - 1) { return true }
-        const timeStr = v.lineTime.slice(1, v.lineTime.length - 1)
-        const min = Number(timeStr.split(":")[0])
-        const sec = Number(timeStr.split(":")[1])
-        const lyricTime = 60 * min + sec
-
-        return cur <= lyricTime
-    }) - 1
+    curLineIdx.value = findIndexByCurrentTime(displayDetail.value, cur)
     if (!lineWrapperRef.value) { return 0 }
     const h = lineWrapperRef.value.offsetHeight
     const sh = h / (displayDetail.value).length
