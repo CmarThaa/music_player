@@ -37,7 +37,7 @@ const autoPlayTop = computed(() => {
 const lineWrapperRef = ref<HTMLElement>()
 
 const oneMoveDiff = ref(0)
-const lastMouseTop = ref(0)
+const lastMouseTop = ref(40)
 const wrapTop = computed(() => lastMouseTop.value + oneMoveDiff.value + autoPlayTop.value)
 const isMouseMove = ref(false)
 const isMouseDown = ref(false)
