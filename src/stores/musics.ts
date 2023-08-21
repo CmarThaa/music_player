@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { type Music } from '@/type'
 import { CircleTypeEnum, MusicStatus } from '@/enums'
 import { usePlayerStore } from './player'
+import { ElMessage } from 'element-plus/lib/components/index.js'
 
 export const useMusicListStore = defineStore('music', () => {
     let _alreadyPlay = 0
@@ -40,8 +41,7 @@ export const useMusicListStore = defineStore('music', () => {
         if (index === undefined) { return }
         playIndex.value = index
         if (!list.value) {
-            alert("not exist")
-            console.log('not exist');
+            ElMessage.error('not exist 歌曲不存在');
             return
         }
         inPlaying.value = list.value[index]

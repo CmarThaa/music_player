@@ -26,7 +26,7 @@ export function findIndexByCurrentTime(lyrics: Array<{
     }) - 1
 }
 
-// TODO : 依据 时间：歌词行 拆开单行，  二次循环 按时间排序
+// 多行歌词拆开重新排序
 export function formatLyricsLrc(lrc: string): Array<{
     line: string,
     lineTime: string
@@ -47,6 +47,5 @@ export function formatLyricsLrc(lrc: string): Array<{
     })
     // 排序
     res.sort((a, b) => a.lineTime > b.lineTime ? 1 : -1)
-    console.log(res); // 多行歌词拆开
     return res
 }
