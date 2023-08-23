@@ -16,11 +16,11 @@ const fileSelect = (e: Event) => {
     })
     const jsonFile = JSON.stringify(mp3Files)
 
-    window.electronAPI.storeSet('music_file', jsonFile)
+    window.electronAPI?.storeSet('music_file', jsonFile)
     musicStore.loadFromStorage()
 }
 </script>
 <template>
-    <input type="file" webkitdirectory @change="fileSelect">
+    <input type="file" webkitdirectory @change="fileSelect" placeholder="请选择MP3歌曲文件夹">
 </template>
 <style scoped></style>

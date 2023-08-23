@@ -1,3 +1,12 @@
 declare interface Window {
-    electronAPI: any
+    electronAPI: {
+        closeAll: function,
+        fileSelect: function,
+        storeSet: function,
+        storeGet: function,
+        onNextPlay: function,
+        onPrevPlay: function,
+        openLyricModal: function,
+        closeLyricModal: function,
+    }
 }

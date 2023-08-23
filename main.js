@@ -6,6 +6,7 @@ const {
   unregisterAll,
   registerGlobalShortCut,
 } = require("./elcConfig/keyboard.ts");
+const { createLyricModal, closeLyricModal } = require("./ipc/lyricsModal.ts");
 let mainWin = null;
 const createWindow = () => {
   mainWin = new BrowserWindow({
@@ -19,6 +20,11 @@ const createWindow = () => {
     },
   });
 
+  mainWin.setBackgroundColor("hsl(230, 100%, 50%)");
+  mainWin.setBackgroundColor("rgb(255, 145, 145)");
+  mainWin.setBackgroundColor("#ff00a3");
+  mainWin.setBackgroundColor("blueviolet");
+
   ipcMain.on("closeAll", (event, title) => {
     mainWin.close();
   });
@@ -27,7 +33,6 @@ const createWindow = () => {
   });
   ipcMain.on("storeSet", (event, key, value) => {
     try {
-      console.log(value);
       store.set(key, value);
     } catch (error) {
       console.log("sotre set error -- : ", error);
@@ -38,7 +43,12 @@ const createWindow = () => {
     return file;
   });
 
-  console.log("vite env", process.env.NODE_ENV);
+  ipcMain.on("openLyricModal", () => {
+    createLyricModal();
+  });
+  ipcMain.on("closeLyricModal", () => {
+    closeLyricModal();
+  });
 
   if (process.env.NODE_ENV === "development") {
     mainWin.loadURL("http://localhost:5173/");

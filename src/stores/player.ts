@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 import { CircleTypeEnum } from '@/enums'
 export const usePlayerStore = defineStore('player', () => {
     const circleType = ref<CircleTypeEnum>(CircleTypeEnum.ListCircle)
-
+    window.electronAPI.storeGet('circleTypeSettingStore').then((res: CircleTypeEnum) => {
+        circleType.value = res
+    })
     function changeCircleType() {
         switch (circleType.value) {
             case CircleTypeEnum.ListCircle:
@@ -19,6 +21,8 @@ export const usePlayerStore = defineStore('player', () => {
             default:
                 break;
         }
+
+        window.electronAPI?.storeSet('circleTypeSettingStore', circleType.value)
     }
 
     return { circleType, changeCircleType }

@@ -1,24 +1,45 @@
 <script setup lang="ts">
+import { useSettingStore } from '../stores/setting';
+import { storeToRefs } from 'pinia';
+const settingStore = useSettingStore()
+const { lyricModalSetting } = storeToRefs(settingStore)
 function onClose() {
-    console.log(2222);
-
-    window.electronAPI.closeAll()
+    window.electronAPI?.closeAll()
 }
+
 </script>
 <template>
     <header id="main-header">
         <span class="app-dragable"></span>
-        <span class="close" @click="onClose"> x </span>
+        <!-- <el-dropdown trigger="click">
+            <span class="white-btn">
+                <el-icon>
+                    <Operation />
+                </el-icon>
+            </span>
+            <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item>
+                        <el-switch v-model="lyricModalSetting" active-text="打开桌面歌词" inactive-text="关闭桌面歌词"
+                            inline-prompt></el-switch>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </template>
+        </el-dropdown> -->
+        <span class="white-btn" @click="onClose">
+            <el-icon>
+                <Close />
+            </el-icon>
+        </span>
     </header>
 </template>
 <style scoped>
-.close {
-    font-size: 1.5rem;
-    margin: 0 .5rem 0.2rem 0;
-    cursor: pointer;
+.white-btn {
     flex: 0;
-    transform: scaleX(1.3);
+    font-size: 1.5rem;
+    cursor: pointer;
     color: rgb(253, 252, 252);
+    margin: .35rem .3rem 0 0;
 }
 
 .app-dragable {

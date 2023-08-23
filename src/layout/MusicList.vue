@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
-import { Music } from '@/type';
+import type { Music } from '@/type';
 import CircleType from '@/components/CircleType.vue';
 const searchVal = ref()
 const musicStore = useMusicListStore()
@@ -34,17 +34,18 @@ onMounted(async () => {
 
     }
 
-    window.electronAPI.onNextPlay(() => {
+    window.electronAPI?.onNextPlay(() => {
         musicStore.playNext()
     })
-    window.electronAPI.onPrevPlay(() => {
+    window.electronAPI?.onPrevPlay(() => {
         musicStore.playPrev()
     })
 })
 </script>
 <template>
     <div>
-        <input type="text" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput" placeholder="过滤歌名">
+        <el-input type="text" style="display: inline" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput"
+            placeholder="过滤歌名"></el-input>
         <CircleType></CircleType>
     </div>
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "

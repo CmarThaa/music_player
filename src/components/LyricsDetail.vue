@@ -6,7 +6,7 @@ import { findIndexByCurrentTime, formatLyricsLrc } from '../utils/lyrics';
 const musicStore = useMusicListStore()
 const { isOpenLyrics, inPlaying } = storeToRefs(musicStore)
 const nowDetailTxt = '暂无歌词'
-const displayLyrics = ref(nowDetailTxt)
+const displayLyrics = ref()
 
 watch(inPlaying, async val => {
     if (val && val.lyricsPath) {
@@ -16,9 +16,7 @@ watch(inPlaying, async val => {
             musicStore.setPlayingLyricsTxt(txt)
         }
         displayLyrics.value = val.lyrics || ''
-        return
     }
-    displayLyrics.value = nowDetailTxt
 })
 
 const displayDetail = computed(() => formatLyricsLrc(displayLyrics.value))
@@ -68,9 +66,12 @@ function onMouseup(event: Event) {
     <el-drawer v-model="isOpenLyrics" size="50%" :title="inPlaying?.name" @mouseup="onMouseup" direction="ttb">
         <div class="wrapper" @mousedown="onMouseDown" @mousemove="onMousemove">
             <div class="lineWrapper" ref="lineWrapperRef" :style="{ 'margin-top': wrapTop + 'px' }">
-                <div class="line" :class="curLineIdx === idx ? 'current' : ''" v-for="(item, idx) in displayDetail">{{
-                    item.line
-                }}</div>
+                <div class="line" :class="curLineIdx === idx ? 'current' : ''" v-for="(item, idx) in displayDetail">
+                    {{ item.line }}
+                </div>
+                <span v-if="!displayDetail.length">
+                    {{ nowDetailTxt }}
+                </span>
             </div>
             <div class="crossLine" v-show="isMouseMove"></div>
         </div>

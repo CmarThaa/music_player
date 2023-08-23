@@ -89,7 +89,7 @@ export const useMusicListStore = defineStore('music', () => {
 
     // function
     async function loadFromStorage() {
-        const storeFiles = JSON.parse(await window.electronAPI.storeGet('music_file'))
+        const storeFiles = JSON.parse(await window.electronAPI?.storeGet('music_file'))
         if (storeFiles.length) {
             setList(storeFiles)
         } else {
