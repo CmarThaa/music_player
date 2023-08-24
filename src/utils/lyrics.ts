@@ -35,7 +35,7 @@ export function formatLyricsLrc(lrc: string): Array<{
         line: string,
         lineTime: string
     }> = []
-
+    if (!lrc) { return res }
     lrc.split("\n").forEach((v) => {
         const match = v.match(TimeReg)
         let lineTime = '', line = '';

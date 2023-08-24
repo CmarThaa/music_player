@@ -7,7 +7,8 @@ import 'element-plus/dist/index.css'
 // @ts-ignore
 import piniaPluginPersist from 'pinia-plugin-persist'
 
-import App from './layout/Main.vue'
+import App from './layout/LyricsModal.vue'
+import router from './router'
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
@@ -21,5 +22,6 @@ app.use(ElementPlus)
 const store = createPinia()
 store.use(piniaPluginPersist)
 app.use(store)
+app.use(router)
 
 app.mount('#app')

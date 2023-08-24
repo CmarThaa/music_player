@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "electron": "cross-env NODE_ENV=development electron .",
+    "start:build": "electron-forge start",
     "start": "cross-env NODE_ENV=development electron-forge start",
     "build": "vite build",
     "dev": "vite",

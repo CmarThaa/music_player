@@ -2,30 +2,14 @@
 import { computed, ref, watch } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
-import { findIndexByCurrentTime, formatLyricsLrc } from '../utils/lyrics';
+import { useNowLyricTxt } from '../mixins/lyricMixin';
 const musicStore = useMusicListStore()
 const { isOpenLyrics, inPlaying } = storeToRefs(musicStore)
 const nowDetailTxt = '暂无歌词'
-const displayLyrics = ref()
 
-watch(inPlaying, async val => {
-    if (val && val.lyricsPath) {
-        if (!val.lyrics) {
-            const res = await fetch(val.lyricsPath)
-            const txt = await res.text()
-            musicStore.setPlayingLyricsTxt(txt)
-        }
-        displayLyrics.value = val.lyrics || ''
-    }
-})
-
-const displayDetail = computed(() => formatLyricsLrc(displayLyrics.value))
-
-const curLineIdx = ref(0)
+const { displayDetail, curLineIdx } = useNowLyricTxt()
 
 const autoPlayTop = computed(() => {
-    const cur = inPlaying.value?.currentTime || 0 // 秒数 number
-    curLineIdx.value = findIndexByCurrentTime(displayDetail.value, cur)
     if (!lineWrapperRef.value) { return 0 }
     const h = lineWrapperRef.value.offsetHeight
     const sh = h / (displayDetail.value).length

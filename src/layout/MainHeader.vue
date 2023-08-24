@@ -11,7 +11,7 @@ function onClose() {
 <template>
     <header id="main-header">
         <span class="app-dragable"></span>
-        <!-- <el-dropdown trigger="click">
+        <el-dropdown trigger="click">
             <span class="white-btn">
                 <el-icon>
                     <Operation />
@@ -25,7 +25,7 @@ function onClose() {
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
-        </el-dropdown> -->
+        </el-dropdown>
         <span class="white-btn" @click="onClose">
             <el-icon>
                 <Close />
