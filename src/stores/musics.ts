@@ -13,7 +13,10 @@ export const useMusicListStore = defineStore('music', () => {
 
     const isOpenLyrics = ref(false)
 
-    function setInPlaying(attr: string, val: any) {
+    function setInPlaying(val: Music) {
+        inPlaying.value = val
+    }
+    function setInPlayingAttr(attr: string, val: any) {
         if (inPlaying.value) {
             inPlaying.value[attr] = val
         }
@@ -25,7 +28,7 @@ export const useMusicListStore = defineStore('music', () => {
     }
     function setPlayingLyricsTxt(txt: string) {
         if (inPlaying.value) {
-            setInPlaying('lyrics', txt)
+            setInPlayingAttr('lyrics', txt)
         }
     }
     function setList(val: Array<Music>) {
@@ -100,7 +103,8 @@ export const useMusicListStore = defineStore('music', () => {
     return {
         setList, list, playNext, playIndex,
         inPlaying, play, loadFromStorage, playPrev,
-        setLyricsOpen, isOpenLyrics, setPlayingLyricsTxt, setInPlaying,
+        setLyricsOpen, isOpenLyrics, setPlayingLyricsTxt, setInPlayingAttr,
+        setInPlaying,
         persist: true,
     }
 })

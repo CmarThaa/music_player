@@ -26,7 +26,7 @@ export function useNowLyricTxt() {
     const displayDetail = computed(() => formatLyricsLrc(displayLyrics.value))
 
     return {
-        displayDetail, curLineIdx,
+        displayDetail, curLineIdx, musicStore,
         inPlaying
     }
 

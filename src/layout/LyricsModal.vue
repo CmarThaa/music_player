@@ -1,30 +1,42 @@
 <script setup lang="ts">
 import { useNowLyricTxt } from '../mixins/lyricMixin';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 function onClose() {
     window.electronAPI?.closeLyricModal()
 }
-const { displayDetail, curLineIdx } = useNowLyricTxt()
+const { displayDetail, curLineIdx, musicStore } = useNowLyricTxt()
 
 const prevLine = computed(() => {
     if ((curLineIdx.value + 1) % 2 === 0) {
         cur.value = 1
-        return displayDetail.value[curLineIdx.value + 1]
+        return displayDetail.value[curLineIdx.value].line
     } else {
         cur.value = 2
-        return curLineIdx.value + 2 >= displayDetail.value.length ? '' : displayDetail.value[curLineIdx.value + 2]
+        return curLineIdx.value + 2 >= displayDetail.value.length ? '' : displayDetail.value[curLineIdx.value + 1].line
     }
 })
 const nextLine = computed(() => {
     if ((curLineIdx.value + 1) % 2 === 0) {
-        return displayDetail.value[curLineIdx.value + 2]
+        return displayDetail.value[curLineIdx.value + 1].line
     } else {
-        return displayDetail.value[curLineIdx.value + 1]
+        return displayDetail.value[curLineIdx.value].line
     }
 })
 
 const cur = ref(1)
+
+onMounted(() => {
+    window.electronAPI?.onmessage((e: any) => {
+        try {
+            const data = JSON.parse(e.inPlaying)
+            console.log(data);
+            musicStore.setInPlaying(data)
+        } catch (error) {
+            console.info('onmessage error', error);
+        }
+    })
+})
 
 </script>
 <template>
@@ -36,8 +48,8 @@ const cur = ref(1)
             </el-icon>
         </span>
         <div class="lyric" v-if="displayDetail?.length">
-            <div class="prev" :class="cur === 1 ? 'cur' : ''">{{ prevLine }}</div>
-            <div class="next" :class="cur === 2 ? 'cur' : ''">{{ nextLine }}</div>
+            <div class="prev" :class="cur === 1 ? 'active' : ''">{{ prevLine }}</div>
+            <div class="next" :class="cur === 2 ? 'active' : ''">{{ nextLine }}</div>
         </div>
         <div v-else class="lyric center">暂无歌词</div>
     </section>
@@ -62,10 +74,14 @@ const cur = ref(1)
     background-color: #918f8f12;
 }
 
+.active {
+    color: red;
+}
+
 .lyric {
     position: fixed;
     top: 0;
-    font-size: 4rem;
+    font-size: 3rem;
     color: white;
     height: 100%;
     width: 100%;
@@ -82,10 +98,13 @@ const cur = ref(1)
 .prev,
 .next {
     position: absolute;
+    white-space: nowrap;
 }
 
+
 .prev {
-    top: -1.5rem;
+    top: 0;
+    left: 2.5rem;
 }
 
 .next {

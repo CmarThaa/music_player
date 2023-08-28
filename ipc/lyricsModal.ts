@@ -3,17 +3,18 @@ const path = require("path");
 const { BrowserWindow } = require('electron');
 let win
 
-function createLyricModal() {
+function createLyricModal(port) {
     if (win === undefined) {
         win = new BrowserWindow({
             width: 1200,
-            height: 100,
+            height: 120,
             frame: false,
             transparent: true,
             webPreferences: {
                 webSecurity: false,
                 devTools: true,
-                preload: path.join(__dirname, "./preload.ts"),
+                contextIsolation: true,
+                preload: path.join(__dirname, "./preloadModal.js"),
             },
             center: true,
             alwaysOnTop: true
@@ -23,6 +24,7 @@ function createLyricModal() {
         } else {
             win.loadFile("./dist/lyric.html");
         }
+        win.webContents.postMessage("port", null, [port]);
     }
 }
 
@@ -34,5 +36,5 @@ function closeLyricModal() {
 }
 
 module.exports = {
-    createLyricModal, closeLyricModal
+    createLyricModal, closeLyricModal, lyricWin: win
 }

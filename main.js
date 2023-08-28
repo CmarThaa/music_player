@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
 const Store = require("electron-store");
 const store = new Store();
 const path = require("path");
@@ -6,7 +6,11 @@ const {
   unregisterAll,
   registerGlobalShortCut,
 } = require("./elcConfig/keyboard.ts");
-const { createLyricModal, closeLyricModal } = require("./ipc/lyricsModal.ts");
+const {
+  createLyricModal,
+  closeLyricModal,
+  lyricWin,
+} = require("./ipc/lyricsModal.ts");
 let mainWin = null;
 const createWindow = () => {
   mainWin = new BrowserWindow({
@@ -16,7 +20,8 @@ const createWindow = () => {
     webPreferences: {
       webSecurity: false,
       devTools: true,
-      preload: path.join(__dirname, "/ipc/preload.ts"),
+      contextIsolation: true,
+      preload: path.join(__dirname, "/ipc/preload.js"),
     },
   });
 
@@ -44,7 +49,9 @@ const createWindow = () => {
   });
 
   ipcMain.on("openLyricModal", () => {
-    createLyricModal();
+    const { port1, port2 } = new MessageChannelMain();
+    mainWin.webContents.postMessage("port", null, [port1]);
+    createLyricModal(port2);
   });
   ipcMain.on("closeLyricModal", () => {
     closeLyricModal();
@@ -52,6 +59,7 @@ const createWindow = () => {
 
   if (process.env.NODE_ENV === "development") {
     mainWin.loadURL("http://localhost:5173/");
+    // mainWin.webContents.openDevTools();
   } else {
     mainWin.loadFile("./dist/index.html");
   }

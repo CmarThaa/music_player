@@ -8,5 +8,8 @@ declare interface Window {
         onPrevPlay: function,
         openLyricModal: function,
         closeLyricModal: function,
-    }
+        getPort: function,
+        postMessage: function,
+        onmessage: function,
+    },
 }

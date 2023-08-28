@@ -32,10 +32,17 @@ onMounted(() => {
         }
         audioRef.value.ontimeupdate = () => {
             const cur = audioRef.value?.currentTime
-            musicStore.setInPlaying('currentTime', cur)
+            musicStore.setInPlayingAttr('currentTime', cur)
+            try {
+                window.electronAPI.postMessage({
+                    inPlaying: JSON.stringify(musicStore.inPlaying),
+                })
+            } catch (error) {
+                console.info('messageError', error);
+            }
         }
         audioRef.value.ondurationchange = () => {
-            musicStore.setInPlaying('duration', audioRef.value?.duration)
+            musicStore.setInPlayingAttr('duration', audioRef.value?.duration)
         }
     }
 })
