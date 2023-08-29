@@ -4,6 +4,8 @@ import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
 import type { Music } from '@/type';
 import CircleType from '@/components/CircleType.vue';
+import useClipboard from 'vue-clipboard3'
+import { ElMessage } from 'element-plus';
 const searchVal = ref()
 const musicStore = useMusicListStore()
 const musicStoreRef = storeToRefs(musicStore)
@@ -41,6 +43,25 @@ onMounted(async () => {
         musicStore.playPrev()
     })
 })
+
+function openView(val: string) {
+    window.electronAPI.openView(`https://www.bing.com/search?q=${val}.lrc`)
+}
+
+function searchLyc(music: Music) {
+    copyName(music)
+    openView(music.name)
+}
+
+async function copyName(music: Music) {
+    const { toClipboard } = useClipboard()
+    try {
+        await toClipboard(music.name)
+        ElMessage('已复制名称')
+    } catch (e) {
+        console.error(e)
+    }
+}
 </script>
 <template>
     <div>
@@ -49,13 +70,27 @@ onMounted(async () => {
         <CircleType></CircleType>
     </div>
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
-        :key="index" @click="play(music)" ref="micRef">
-        <div class="name">{{ music.name }}</div>
+        :key="index" @dblclick="play(music)" ref="micRef" title="双击播放">
+        <div class="name">
+            <span>{{ music.name }}</span>
+            <div class="icon-wrap" :style="{ 'margin-right': '1rem' }">
+                <el-icon @click="play(music)">
+                    <VideoPlay />
+                </el-icon>
+
+                <el-icon @click="searchLyc(music)">
+                    <Search />
+                </el-icon>
+
+                <el-icon @click="copyName(music)">
+                    <CopyDocument />
+                </el-icon>
+            </div>
+        </div>
     </section>
 </template>
 <style scoped>
 .mic {
-    cursor: pointer;
     border: 1px dashed #ccc;
     margin: .2rem 0;
 }
@@ -69,5 +104,21 @@ onMounted(async () => {
 .mic.playing .mic:hover {
     color: rgb(78, 128, 76);
     border: 1px solid rgb(178, 178, 249);
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon-wrap>* {
+    margin-left: .2rem;
+    cursor: pointer;
+}
+
+.icon-wrap>*:hover {
+    color: rgb(151, 151, 245);
+    transform: scale(1.05);
 }
 </style>

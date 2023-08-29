@@ -11,5 +11,6 @@ declare interface Window {
         getPort: function,
         postMessage: function,
         onmessage: function,
+        openView: function,
     },
 }

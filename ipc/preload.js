@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   openLyricModal: () => ipcRenderer.send("openLyricModal"),
   closeLyricModal: () => ipcRenderer.send("closeLyricModal"),
   postMessage: (msg) => messagePort.postMessage(msg),
+
+  openView: (url) => ipcRenderer.send("openView", url),
 });
 
 ipcRenderer.on("port", (e) => {

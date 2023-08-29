@@ -11,6 +11,7 @@ const {
   closeLyricModal,
   lyricWin,
 } = require("./ipc/lyricsModal.ts");
+const { createView } = require("./ipc/browserView.js");
 let mainWin = null;
 const createWindow = () => {
   mainWin = new BrowserWindow({
@@ -30,6 +31,9 @@ const createWindow = () => {
   mainWin.setBackgroundColor("#ff00a3");
   mainWin.setBackgroundColor("blueviolet");
 
+  ipcMain.on("openView", (event, url) => {
+    createView(url);
+  });
   ipcMain.on("closeAll", (event, title) => {
     mainWin.close();
   });

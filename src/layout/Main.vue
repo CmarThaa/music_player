@@ -4,16 +4,15 @@ import MusicList from './MusicList.vue';
 import FileUploader from './FileUploader.vue';
 import InPlay from './InPlay.vue';
 import LyricsDetail from '../components/LyricsDetail.vue';
+import WebSearchView from '@/components/WebSearchView.vue';
 
 </script>
 
 <template>
     <MainHeader></MainHeader>
     <div id="wrapper">
-        <file-uploader></file-uploader>
-        <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-        <!-- <button @click="ipcMessage">ipc message btn</button> -->
-        <!-- <RouterView /> -->
+        <file-uploader :style="{ 'margin-bottom': '0.2rem', 'display': 'block' }"></file-uploader>
+        <web-search-view></web-search-view>
         <music-list></music-list>
     </div>
     <br />
