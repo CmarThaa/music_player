@@ -12,5 +12,6 @@ declare interface Window {
         postMessage: function,
         onmessage: function,
         openView: function,
+        closeLyricModalByModal: function,
     },
 }

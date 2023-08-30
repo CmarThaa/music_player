@@ -20,7 +20,7 @@ const createWindow = () => {
     frame: false,
     webPreferences: {
       webSecurity: false,
-      devTools: true,
+      devTools: process.env.NODE_ENV === "development" ? true : false,
       contextIsolation: true,
       preload: path.join(__dirname, "/ipc/preload.js"),
     },
@@ -57,7 +57,8 @@ const createWindow = () => {
     mainWin.webContents.postMessage("port", null, [port1]);
     createLyricModal(port2);
   });
-  ipcMain.on("closeLyricModal", () => {
+  ipcMain.on("closeLyricModal", (fromModal) => {
+    fromModal && mainWin.webContents.send("closeLyricModalByModal");
     closeLyricModal();
   });
 

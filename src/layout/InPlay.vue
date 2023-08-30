@@ -38,7 +38,7 @@ onMounted(() => {
                     inPlaying: JSON.stringify(musicStore.inPlaying),
                 })
             } catch (error) {
-                console.info('messageError', error);
+                // console.info('messageError', error);
             }
         }
         audioRef.value.ondurationchange = () => {

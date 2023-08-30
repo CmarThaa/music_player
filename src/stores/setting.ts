@@ -5,6 +5,10 @@ export const useSettingStore = defineStore('setting', () => {
         lyricModalSetting.value = res === '1' ? true : false
     })
     const lyricModalSetting = ref(false)
+
+    function setLyricModalSetting(val: boolean) {
+        lyricModalSetting.value = val
+    }
     watch(lyricModalSetting, val => {
         if (val) {
             window.electronAPI?.openLyricModal()
@@ -14,7 +18,7 @@ export const useSettingStore = defineStore('setting', () => {
         window.electronAPI?.storeSet('lyricModalSettingStore', val ? '1' : '0')
     })
     return {
-        lyricModalSetting,
+        lyricModalSetting, setLyricModalSetting,
         persist: true
     }
 })

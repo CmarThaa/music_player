@@ -62,8 +62,24 @@ async function copyName(music: Music) {
         console.error(e)
     }
 }
+
+const micRef = ref()
+
+function goNowPlayDom() {
+    const dom = micRef.value[musicStore.playIndex]
+    console.log(dom);
+    (dom as HTMLElement).scrollIntoView({
+        block: 'center',
+        inline: 'center'
+    })
+}
 </script>
 <template>
+    <div class="position">
+        <el-icon title="定位当前播放歌曲" @click="goNowPlayDom">
+            <LocationInformation />
+        </el-icon>
+    </div>
     <div>
         <el-input type="text" style="display: inline" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput"
             placeholder="过滤歌名"></el-input>
@@ -120,5 +136,21 @@ async function copyName(music: Music) {
 .icon-wrap>*:hover {
     color: rgb(151, 151, 245);
     transform: scale(1.05);
+}
+
+.position {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    vertical-align: middle;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20%;
+    right: .5rem;
+    border: 1px solid #eaeaea;
+}
+
+.position:hover {
+    transform: scale(1.1);
+    color: rgb(148, 148, 251);
 }
 </style>

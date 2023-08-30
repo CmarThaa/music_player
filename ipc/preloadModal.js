@@ -11,6 +11,7 @@ ipcRenderer.on("port", async (e) => {
     onmessage: (callback) => (messageHandler = callback),
     // 打开桌面歌词
     openLyricModal: () => ipcRenderer.send("openLyricModal"),
-    closeLyricModal: () => ipcRenderer.send("closeLyricModal"),
+    closeLyricModal: (fromModal) =>
+      ipcRenderer.send("closeLyricModal", fromModal),
   });
 });

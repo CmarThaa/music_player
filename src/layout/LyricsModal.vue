@@ -3,7 +3,7 @@ import { useNowLyricTxt } from '../mixins/lyricMixin';
 import { computed, onMounted, ref } from 'vue';
 
 function onClose() {
-    window.electronAPI?.closeLyricModal()
+    window.electronAPI?.closeLyricModal(true)
 }
 const { displayDetail, curLineIdx, musicStore } = useNowLyricTxt()
 

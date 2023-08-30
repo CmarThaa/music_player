@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { useSettingStore } from '../stores/setting';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 const settingStore = useSettingStore()
 const { lyricModalSetting } = storeToRefs(settingStore)
 function onClose() {
     window.electronAPI?.closeAll()
 }
+
+onMounted(() => {
+    window.electronAPI?.closeLyricModalByModal(() => {
+        settingStore.setLyricModalSetting(false)
+    })
+})
 
 </script>
 <template>

@@ -22,7 +22,8 @@ const vAutoSelect = {
 </script>
 <template>
     <div class="searchView">
-        <el-input type="text" v-auto-select v-model="iptValue" placeholder="输入歌曲名称" size="small" class="ipt">
+        <el-input type="text" v-auto-select v-model="iptValue" placeholder="输入歌曲名称" size="small" class="ipt"
+            @keyup.enter="openView">
             <template #append>
                 <el-select v-model="selectValue" placeholder="类型" style="width: 115px">
                     <el-option label="mp3" value="mp3" />

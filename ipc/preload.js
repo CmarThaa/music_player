@@ -13,8 +13,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   // 打开桌面歌词
   openLyricModal: () => ipcRenderer.send("openLyricModal"),
   closeLyricModal: () => ipcRenderer.send("closeLyricModal"),
+  closeLyricModalByModal: (fn) => ipcRenderer.on("closeLyricModalByModal", fn),
   postMessage: (msg) => messagePort.postMessage(msg),
-
   openView: (url) => ipcRenderer.send("openView", url),
 });
 
