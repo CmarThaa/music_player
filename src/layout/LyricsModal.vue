@@ -2,6 +2,15 @@
 import { useNowLyricTxt } from '../mixins/lyricMixin';
 import { computed, onMounted, ref } from 'vue';
 
+const FontSize = ref(3)
+function fontSizeUp() {
+    FontSize.value += 0.2
+}
+function fontSizeDown() {
+    if (FontSize.value > 0.6) {
+        FontSize.value -= 0.2
+    }
+}
 function onClose() {
     window.electronAPI?.closeLyricModal(true)
 }
@@ -42,28 +51,40 @@ onMounted(() => {
 <template>
     <section class="modal">
         <div class="app-dragable"></div>
-        <span class="btn" @click="onClose">
-            <el-icon>
+        <span class="btn">
+            <el-icon @click="fontSizeUp">
+                <CaretTop />
+            </el-icon>
+            <el-icon @click="fontSizeDown">
+                <CaretBottom />
+            </el-icon>
+            <el-icon @click="onClose">
                 <Close />
             </el-icon>
         </span>
-        <div class="lyric" v-if="displayDetail?.length">
+        <div class="lyric" :style="{ 'font-size': FontSize + 'rem' }" v-if="displayDetail?.length">
             <div class="prev" :class="cur === 1 ? 'active' : ''">{{ prevLine }}</div>
             <div class="next" :class="cur === 2 ? 'active' : ''">{{ nextLine }}</div>
         </div>
-        <div v-else class="lyric center">暂无歌词</div>
+        <div v-else :style="{ 'font-size': FontSize + 'rem' }" class="lyric center">暂无歌词</div>
     </section>
 </template>
 <style scoped>
 .btn {
-    cursor: pointer;
+    display: flex;
     font-size: 2rem;
     color: white;
+    width: 6rem;
+}
+
+.btn>i {
+    cursor: pointer;
 }
 
 .app-dragable {
     height: 100%;
     width: 100%;
+    cursor: move;
 }
 
 .modal {
@@ -81,12 +102,12 @@ onMounted(() => {
 .lyric {
     position: fixed;
     top: 0;
-    font-size: 3rem;
-    color: white;
+    color: rgb(0, 137, 89);
     height: 100%;
-    width: 100%;
     padding: .5rem;
-    right: 2rem;
+    right: 6rem;
+    left: 0;
+    user-select: none;
 }
 
 .lyric.center {

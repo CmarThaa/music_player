@@ -51,7 +51,7 @@
     "vue-tsc": "^1.6.5"
   },
   "name": "easy-player",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "description": "Music Player!",
   "main": "main.js",
   "author": "Cmart",

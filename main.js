@@ -6,11 +6,7 @@ const {
   unregisterAll,
   registerGlobalShortCut,
 } = require("./elcConfig/keyboard.ts");
-const {
-  createLyricModal,
-  closeLyricModal,
-  lyricWin,
-} = require("./ipc/lyricsModal.ts");
+const { createLyricModal, closeLyricModal } = require("./ipc/lyricsModal.ts");
 const { createView } = require("./ipc/browserView.js");
 let mainWin = null;
 const createWindow = () => {
@@ -36,6 +32,7 @@ const createWindow = () => {
   });
   ipcMain.on("closeAll", (event, title) => {
     mainWin.close();
+    closeLyricModal();
   });
   ipcMain.on("fileSelect", (event, domEvent) => {
     console.log(domEvent);

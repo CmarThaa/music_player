@@ -25,9 +25,8 @@ function onKeyUp(event: KeyboardEvent) {
             play(filterList.value[0])
     }
 }
-function onInput(val: Event) {
-    const value = (val.target as HTMLInputElement).value
-    filterList.value = musicStore.list?.filter(v => v.name.includes(value)) || []
+function onInput(val: string) {
+    filterList.value = musicStore.list?.filter(v => v.name.includes(val)) || []
 }
 onMounted(async () => {
     try {
@@ -63,12 +62,13 @@ async function copyName(music: Music) {
     }
 }
 
-const micRef = ref()
+const micRef = ref<Array<HTMLElement>>()
 
 function goNowPlayDom() {
+    if (!micRef.value) return
     const dom = micRef.value[musicStore.playIndex]
     console.log(dom);
-    (dom as HTMLElement).scrollIntoView({
+    dom.scrollIntoView({
         block: 'center',
         inline: 'center'
     })
@@ -80,11 +80,13 @@ function goNowPlayDom() {
             <LocationInformation />
         </el-icon>
     </div>
+
     <div>
         <el-input type="text" style="display: inline" v-model="searchVal" autofocus @keyup="onKeyUp" @input="onInput"
             placeholder="过滤歌名"></el-input>
         <CircleType></CircleType>
     </div>
+
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
         :key="index" @dblclick="play(music)" ref="micRef" title="双击播放">
         <div class="name">
