@@ -20,5 +20,6 @@
 2.ALT + <- 上一首
 
 # 屏幕截图
-![image](https://github.com/CmarThaa/music_player/assets/15883456/2030db78-1eab-446d-a71c-2815d3629c4b)
+![image](https://github.com/CmarThaa/music_player/assets/15883456/ab83dce1-ab2a-43b2-9280-ceacee412d9d)
+
 
