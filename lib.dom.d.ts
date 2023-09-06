@@ -6,6 +6,7 @@ declare interface Window {
         storeGet: function,
         onNextPlay: function,
         onPrevPlay: function,
+        onMusicStatusToggle: function,
         openLyricModal: function,
         closeLyricModal: function,
         getPort: function,

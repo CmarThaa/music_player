@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   // 下一首
   onNextPlay: (callback) => ipcRenderer.on("onNextPlay", callback),
   onPrevPlay: (callback) => ipcRenderer.on("onPrevPlay", callback),
+  onMusicStatusToggle: (callback) => ipcRenderer.on("onMusicStatusToggle", callback),
 
   // 打开桌面歌词
   openLyricModal: () => ipcRenderer.send("openLyricModal"),

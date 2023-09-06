@@ -26,6 +26,9 @@ export default defineConfig({
             input: {
                 index: path.join(__dirname, 'index.html'),
                 lyric: path.join(__dirname, 'lyric.html'),
+            },
+            output: {
+                sourcemap: process.env.NODE_ENV === "development" ? true : false
             }
         }
     },

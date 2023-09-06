@@ -1,5 +1,4 @@
 import type { MusicStatus } from "./enums";
-
 export type Music = {
     name: string,
     status: `${MusicStatus}`,
@@ -9,5 +8,6 @@ export type Music = {
     range?: string,
     duration: string,
     currentTime: number,
+    domRef?: HTMLAudioElement,
     [P: string]: any,
 }

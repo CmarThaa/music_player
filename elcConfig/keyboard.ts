@@ -6,6 +6,9 @@ function registerGlobalShortCut(mainWin) {
     globalShortcut.register('Alt+Left', () => {
         mainWin.webContents.send('onPrevPlay')
     })
+    globalShortcut.register('Alt+Space', () => {
+        mainWin.webContents.send('onMusicStatusToggle')
+    })
 }
 
 function unregisterAll() {

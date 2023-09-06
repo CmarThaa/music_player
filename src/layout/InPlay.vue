@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useMusicListStore } from '../stores/musics';
 import { storeToRefs } from 'pinia';
 import { CircleTypeEnum, MusicStatus } from '../enums';
@@ -9,18 +9,9 @@ const audioRef = ref<HTMLAudioElement>()
 const musicStore = useMusicListStore()
 const { inPlaying: nowMusic } = storeToRefs(musicStore)
 function openLyric() { musicStore.setLyricsOpen(true) }
-watch(nowMusic, (music) => {
-    nextTick(() => {
-        try {
-            if (music?.status === MusicStatus.Play)
-                audioRef.value?.play()
-        } catch (error) {
-            alert(error)
-        }
-    })
-})
 onMounted(() => {
     if (audioRef.value) {
+        musicStore.setAudioDom(audioRef.value)
         audioRef.value.onended = () => {
             const playerStore = usePlayerStore()
             if (playerStore.circleType === CircleTypeEnum.Single) {
@@ -44,6 +35,13 @@ onMounted(() => {
         audioRef.value.ondurationchange = () => {
             musicStore.setInPlayingAttr('duration', audioRef.value?.duration)
         }
+
+        audioRef.value.onplay = () => {
+            musicStore.setInPlayingAttr('status', MusicStatus.Play)
+        }
+        audioRef.value.onpause = () => {
+            musicStore.setInPlayingAttr('status', MusicStatus.Stop)
+        }
     }
 })
 const displayName = computed(() => nowMusic.value?.name || '暂未播放')
@@ -58,7 +56,7 @@ const displayName = computed(() => nowMusic.value?.name || '暂未播放')
                 <el-tag type="info" round @click="openLyric">歌词</el-tag>
             </span>
         </div>
-        <audio :src="nowMusic?.path" controls ref="audioRef"></audio>
+        <audio controls ref="audioRef"></audio>
     </div>
 </template>
 <style scoped>

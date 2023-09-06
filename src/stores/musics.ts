@@ -10,8 +10,12 @@ export const useMusicListStore = defineStore('music', () => {
     const list = ref<Array<Music>>()
     const inPlaying = ref<Music>()
     const playIndex = ref(0)
+    const audioDom = ref()
 
     const isOpenLyrics = ref(false)
+    function setAudioDom(ele: HTMLAudioElement) {
+        audioDom.value = ele
+    }
 
     function setInPlaying(val: Music) {
         inPlaying.value = val
@@ -39,7 +43,17 @@ export const useMusicListStore = defineStore('music', () => {
         const idx = list.value?.findIndex((v: Music) => v.path === music.path)
         playByIndex(idx)
     }
+    function stop(music: Music) {
+        const idx = list.value?.findIndex((v: Music) => v.path === music.path)
+        stopByIndex(idx)
+    }
 
+    function stopByIndex(index?: number) {
+        if (index === undefined) { return }
+        if (inPlaying.value) {
+            audioDom.value?.pause()
+        }
+    }
     function playByIndex(index?: number) {
         if (index === undefined) { return }
         playIndex.value = index
@@ -48,8 +62,18 @@ export const useMusicListStore = defineStore('music', () => {
             return
         }
         inPlaying.value = list.value[index]
-        inPlaying.value.status = MusicStatus.Play
+        audioDom.value.src = inPlaying.value.path
+        audioDom.value?.play()
         _alreadyPlay = 1
+    }
+
+    function togglePlayStatus() {
+        if (inPlaying.value?.status === MusicStatus.Play) {
+            stopByIndex(playIndex.value)
+        }
+        if (inPlaying.value?.status === MusicStatus.Stop) {
+            playByIndex(playIndex.value)
+        }
     }
 
     function playNext() {
@@ -101,10 +125,10 @@ export const useMusicListStore = defineStore('music', () => {
     }
 
     return {
-        setList, list, playNext, playIndex,
-        inPlaying, play, loadFromStorage, playPrev,
+        setList, list, playNext, playIndex, togglePlayStatus,
+        inPlaying, play, loadFromStorage, playPrev, stop,
         setLyricsOpen, isOpenLyrics, setPlayingLyricsTxt, setInPlayingAttr,
-        setInPlaying,
+        setInPlaying, setAudioDom,
         persist: true,
     }
 })

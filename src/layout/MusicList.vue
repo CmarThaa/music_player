@@ -6,6 +6,7 @@ import type { Music } from '@/type';
 import CircleType from '@/components/CircleType.vue';
 import useClipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus';
+import { MusicStatus } from '../enums';
 const searchVal = ref()
 const musicStore = useMusicListStore()
 const musicStoreRef = storeToRefs(musicStore)
@@ -16,8 +17,16 @@ const displayList = computed(() => {
     }
     return musicStoreRef.list.value
 })
-function play(music: any) {
+function play(music: Music) {
     musicStore.play(music)
+}
+function stop(music: Music) {
+    musicStore.stop(music)
+}
+function toggleStatus(music: Music) {
+    if (music.status === MusicStatus.Play) {
+        stop(music)
+    } else { play(music) }
 }
 function onKeyUp(event: KeyboardEvent) {
     if (event.key === 'Enter') {
@@ -40,6 +49,9 @@ onMounted(async () => {
     })
     window.electronAPI?.onPrevPlay(() => {
         musicStore.playPrev()
+    })
+    window.electronAPI?.onMusicStatusToggle(() => {
+        musicStore.togglePlayStatus()
     })
 })
 
@@ -73,6 +85,14 @@ function goNowPlayDom() {
         inline: 'center'
     })
 }
+
+const playingStatus = function (idx: number) {
+    if (idx === musicStoreRef.playIndex.value) {
+        return musicStoreRef.inPlaying.value?.status === MusicStatus.Play
+    } else {
+        return false
+    }
+}
 </script>
 <template>
     <div class="position">
@@ -88,11 +108,14 @@ function goNowPlayDom() {
     </div>
 
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
-        :key="index" @dblclick="play(music)" ref="micRef" title="双击播放">
+        :key="index" @dblclick="toggleStatus(music)" ref="micRef" title="双击播放">
         <div class="name">
             <span>{{ music.name }}</span>
             <div class="icon-wrap" :style="{ 'margin-right': '1rem' }">
-                <el-icon @click="play(music)">
+                <el-icon v-if="playingStatus(index)" @click="stop(music)">
+                    <VideoPause />
+                </el-icon>
+                <el-icon v-else @click="play(music)">
                     <VideoPlay />
                 </el-icon>
 
