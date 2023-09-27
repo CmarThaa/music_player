@@ -7,7 +7,10 @@ function createLyricModal(port) {
     if (win === undefined) {
         win = new BrowserWindow({
             width: 1200,
+            minWidth: 400,
             height: 120,
+            minHeight: 50,
+            maxHeight: 250,
             frame: false,
             transparent: true,
             webPreferences: {

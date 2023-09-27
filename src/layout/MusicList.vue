@@ -7,6 +7,7 @@ import CircleType from '@/components/CircleType.vue';
 import useClipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus';
 import { MusicStatus } from '../enums';
+import { OpenView } from '../utils/shared';
 const searchVal = ref()
 const musicStore = useMusicListStore()
 const musicStoreRef = storeToRefs(musicStore)
@@ -56,7 +57,7 @@ onMounted(async () => {
 })
 
 function openView(val: string) {
-    window.electronAPI.openView(`https://www.bing.com/search?q=${val}.lrc`)
+    OpenView(`https://www.bing.com/search?q=${val}.lrc`)
 }
 
 function searchLyc(music: Music) {
@@ -108,7 +109,7 @@ const playingStatus = function (idx: number) {
     </div>
 
     <section class="mic" :class="index === musicStore.playIndex ? 'playing' : ''" v-for="(music, index) in  displayList "
-        :key="index" @dblclick="toggleStatus(music)" ref="micRef" title="双击播放">
+        :key="index" @dblclick="toggleStatus(music)" ref="micRef">
         <div class="name">
             <span>{{ music.name }}</span>
             <div class="icon-wrap" :style="{ 'margin-right': '1rem' }">
@@ -134,6 +135,7 @@ const playingStatus = function (idx: number) {
 .mic {
     border: 1px dashed #ccc;
     margin: .2rem 0;
+    padding-left: .5rem;
 }
 
 .mic.playing {

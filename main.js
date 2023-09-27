@@ -9,10 +9,12 @@ const {
 const { createLyricModal, closeLyricModal } = require("./ipc/lyricsModal.ts");
 const { createView } = require("./ipc/browserView.js");
 let mainWin = null;
-const createWindow = () => {
+const createWindow = (workAreaSize) => {
   mainWin = new BrowserWindow({
-    width: 400,
-    height: 600,
+    width: workAreaSize.width * 0.25,
+    height: workAreaSize * 0.66,
+    minWidth: 400,
+    minHeight: 600,
     frame: false,
     webPreferences: {
       webSecurity: false,
@@ -70,9 +72,12 @@ const createWindow = () => {
 if (require("electron-squirrel-startup")) app.quit();
 
 app.whenReady().then(() => {
-  createWindow();
+  const { screen } = require("electron");
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const workAreaSize = primaryDisplay.workAreaSize;
+  createWindow(workAreaSize);
   app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createWindow(workAreaSize);
   });
   registerGlobalShortCut(mainWin);
 });

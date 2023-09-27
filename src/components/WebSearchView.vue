@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { OpenView } from '../utils/shared';
 
 const iptValue = ref()
 const selectValue = ref('mp3')
 function openView() {
     if (iptValue.value) {
-        window.electronAPI.openView(`https://www.bing.com/search?q=${iptValue.value}.${selectValue.value}`)
+        OpenView(`https://www.bing.com/search?q=${iptValue.value}.${selectValue.value}`)
     }
 }
 
